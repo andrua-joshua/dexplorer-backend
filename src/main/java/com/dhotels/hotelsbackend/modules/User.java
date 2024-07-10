@@ -72,6 +72,10 @@ public class User {
         this.fullName = fullName;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public String getEmail() {
         return email;
     }

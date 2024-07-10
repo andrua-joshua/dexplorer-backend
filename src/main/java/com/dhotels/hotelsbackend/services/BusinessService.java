@@ -93,16 +93,17 @@ public class BusinessService {
                 new Date()
         );
 
+        Business savedBusiness = businessRepository.save(business);
 
-        user.getBusinesses().add(business);
-        businessType.getBusinesses().add(business);
-        currency.getBusinesses().add(business);
+        user.getBusinesses().add(savedBusiness);
+        businessType.getBusinesses().add(savedBusiness);
+        currency.getBusinesses().add(savedBusiness);
 
         userRepository.save(user);
         businessTypeRepository.save(businessType);
         currencyRepository.save(currency);
 
-        return businessRepository.save(business);
+        return savedBusiness;
     }
 
 
@@ -133,12 +134,12 @@ public class BusinessService {
         business.setCity(businessUpdateRequest.getCity());
         business.setCurrency(currency);
 
+        Business savedBusiness = businessRepository.save(business);
 
-
-        currency.getBusinesses().add(business);
+        currency.getBusinesses().add(savedBusiness);
         currencyRepository.save(currency);
         currencyRepository.save(prevCurrency);
-        return businessRepository.save(business);
+        return savedBusiness;
     }
 
 

@@ -39,6 +39,7 @@ public class RoomService {
     ///todo {rooms crude}
     ///adding room to a Business ----/
     ///getting all business rooms  ----/
+    ///get room by id  ----/
     ///update room  ----/
     ///delete room  ----/
     ///adding room Type ----/
@@ -81,13 +82,27 @@ public class RoomService {
                 new ArrayList<Package>()
         );
 
-        roomType.getRooms().add(room);
-        business.getRoomList().add(room);
+        Room savedRoom =  roomRespository.save(room);
+
+        roomType.getRooms().add(savedRoom);
+        business.getRoomList().add(savedRoom);
 
         roomTypeRepository.save(roomType);
         businessRepository.save(business);
 
-        return roomRespository.save(room);
+        return savedRoom;
+    }
+
+
+    public Room getRoomById(
+            Integer roomId
+    ){
+        return roomRespository.findById(roomId)
+                .orElseThrow(
+                        ()-> new ResourceNotFoubdException(
+                                "Room Not Found"
+                        )
+                );
     }
 
 
@@ -123,10 +138,13 @@ public class RoomService {
         room.setCapacity(updateRoomReq.getCapacity());
         room.setPrice(updateRoomReq.getPrice());
 
-        roomType.getRooms().add(room);
+        Room savedRoom = roomRespository.save(room);
+
+        roomType.getRooms().add(savedRoom);
         roomTypeRepository.save(prevRoomType);
         roomTypeRepository.save(roomType);
-        return roomRespository.save(room);
+
+        return savedRoom;
     }
 
 
@@ -149,7 +167,6 @@ public class RoomService {
         roomTypeRepository.save(roomType);
 
         roomRespository.delete(room);
-
     }
 
     public List<Room> getAllRoomsByBusiness(Integer businessId){
@@ -209,7 +226,5 @@ public class RoomService {
 
         roomTypeRepository.delete(roomType);
     }
-
-
 
 }
